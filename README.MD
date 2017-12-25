@@ -4,6 +4,8 @@
 - Search web using provided URL and display during card review. **Search the 1st Field** of current note
 - Capture web image as card resource and save into note
 
+[中文说明点这里](https://zhuanlan.zhihu.com/p/32341193)
+
 ![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/capture.gif)
 
 ## Installation
