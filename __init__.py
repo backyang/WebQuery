@@ -157,7 +157,7 @@ class Config(metaclass=_MetaConfigObj):
     class Meta:
         __profile_store__ = True
 
-    doc_size = (200, 100)
+    doc_size = (300, 300)
 
     image_field_map = {}
 
