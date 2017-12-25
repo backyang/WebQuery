@@ -4,13 +4,7 @@
 - Search web during review in Anki aside window for the **The 1st Field** of current note.
 - Capture web image as source file and save to your note
 
-/* Bing Image*/
-![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/main_bing.png)
-
-/* Wikipedia Item*/
-
-![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/main_wiki.png)
-
+![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/capture.gif)
 
 ## Installation
 Use the installation code: 627484806
@@ -52,3 +46,11 @@ You would be able to search the web for more provider URL patterns, or make your
 ### Other Setting
 In the Addon setting window there more items for customization:
 - query_on_question: default = true, set to false if you need the screen window to be shown only on answer page.
+
+### More Screens
+/* Bing Image*/
+![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/main_bing.png)
+
+/* Wikipedia Item*/
+
+![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/main_wiki.png)
