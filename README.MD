@@ -8,6 +8,7 @@
 ![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/main_bing.png)
 
 /* Wikipedia Item*/
+
 ![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/main_wiki.png)
 
 
@@ -21,10 +22,10 @@ Use the installation code: 627484806
 2. Select your note field and save
 3. Cropped images will be saved to your resource folder of the profile 
 
-[](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/save_cropped_img_to_field.png)
+![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/save_cropped_img_to_field.png)
 
 
-[](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/save_cropped_img_to_field_2.png)
+![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/save_cropped_img_to_field_2.png)
 
 ### Provider URL
 This is an URL string you can customize in your settings. By default, 
