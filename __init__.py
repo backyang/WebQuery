@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright: kuangkuang <upday7@apl.com>
+# Copyright: kuangkuang <upday7@163.com>
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 
 """
