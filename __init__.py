@@ -157,7 +157,7 @@ class Config(metaclass=_MetaConfigObj):
     class Meta:
         __profile_store__ = True
 
-    doc_size = (300, 300)
+    doc_size = (500, 300)
 
     image_field_map = {}
 
@@ -404,6 +404,7 @@ class WebQryAddon:
         ]
 
         self.web = WebQueryWidget(mw, )
+        self.web.setVisible(False)
         self.web.img_saving.connect(self.save_img)
         self.dock = None
 
