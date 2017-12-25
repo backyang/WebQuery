@@ -1,8 +1,8 @@
 # Web Query
 
 ## Main features
-- Search web during review in Anki aside window for the **The 1st Field** of current note.
-- Capture web image as source file and save to your note
+- Search web using provided URL and display during card review. **Search the 1st Field** of current note
+- Capture web image as card resource and save into note
 
 ![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/capture.gif)
 
@@ -37,7 +37,7 @@ You would be able to search the web for more provider URL patterns, or make your
 ![](https://raw.githubusercontent.com/upday7/WebQuery/master/screenshots/url_provider.png)
 
 #### Update Provider URL
-**Every Provide URL** should have and only one '%s' place holder.
+**Every Provider URL** should have and only one '%s' place holder.
 
 1. Go to "Tool" > "Addons" and find "WebQuery"
 2. Click on "Settings"
