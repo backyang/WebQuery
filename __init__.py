@@ -482,6 +482,7 @@ class WebQryAddon:
         dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         dock.setFeatures(QDockWidget.DockWidgetClosable)
         dock.setWidget(w)
+        dock.setContentsMargins(10, 10, 10, 10)
         if mw.width() < 600:
             mw.resize(QSize(600, mw.height()))
         mw.addDockWidget(Qt.RightDockWidgetArea, dock)
