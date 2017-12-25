@@ -167,6 +167,7 @@ class UserConfig(metaclass=_MetaConfigObj):
         __profile_store__ = False
 
     load_on_question = True
+    image_quality = 50
     provider_url = "https://www.bing.com/images/search?q=%s"
 
 
@@ -562,13 +563,14 @@ class WebQryAddon:
         :return:
         """
         print("Saving Image: {} {}".format(img, "PNG"))
+        img = img.convertToFormat(QImage.Format_RGB32, Qt.ThresholdDither | Qt.AutoColor)
         if not self.reviewer:
             return
         fld_index = self.web.combo_cur_fld_nm.currentIndex()
         anki_label = '<img src="{}">'
-        fn = "web_qry_{}_{}.png".format(self.word, uuid4().hex.upper())
+        fn = "web_qry_{}_{}.jpg".format(self.word, uuid4().hex.upper())
         self.note.fields[fld_index] = anki_label.format(fn)
-        if img.save(fn):
+        if img.save(fn, 'jpg', UserConfig.image_quality):
             self.note.flush()
             self.card.flush()
             tooltip("Saved image to current card: {}".format(fn), 5000)
