@@ -167,7 +167,7 @@ class UserConfig(metaclass=_MetaConfigObj):
         __profile_store__ = False
 
     load_on_question = True
-    provider_url = "http://en.wikipedia.org/wiki/wiki.html?search=%s"
+    provider_url = "https://www.bing.com/images/search?q=%s"
 
 
 # endregion
