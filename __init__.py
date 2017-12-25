@@ -159,6 +159,8 @@ class Config(metaclass=_MetaConfigObj):
 
     doc_size = (200, 100)
 
+    image_field_map = {}
+
 
 class UserConfig(metaclass=_MetaConfigObj):
     class Meta:
@@ -166,7 +168,6 @@ class UserConfig(metaclass=_MetaConfigObj):
 
     load_on_question = True
     provider_url = "http://en.wikipedia.org/wiki/wiki.html?search=%s"
-    image_field_map = {}
 
 
 # endregion
@@ -301,8 +302,8 @@ class WebQueryWidget(QWidget):
         self.view_button = QPushButton('View', self)
         self.view_button.setShortcut(QKeySequence("v"))
 
-        self.capture_button.clicked.connect(self.capture)
-        self.view_button.clicked.connect(self.view)
+        self.capture_button.clicked.connect(self.on_capture)
+        self.view_button.clicked.connect(self.on_view)
 
         # region Save Image Button and Combo Group
         self.img_btn_grp_ly = QHBoxLayout()
@@ -329,15 +330,20 @@ class WebQueryWidget(QWidget):
 
         self.setLayout(self.layout)
 
+        # Visibles
         self.loading_lb.setVisible(False)
+        self.img_lb.setVisible(False)
+        self._view.setVisible(False)
 
         # other slots
         self._view.loadStarted.connect(self.loading_started)
         self._view.loadFinished.connect(self.load_completed)
 
     def loading_started(self):
+        self.img_lb.setVisible(False)
+        self.show_view(False)
+        self.show_capture(False)
         self.loading_lb.show()
-        self._view.setVisible(False)
 
         mv = QMovie(os.path.join(_Vars.this_addon_folder, "loading.gif"))
         mv.setScaledSize(QSize(self._view.size().width() / 2, self._view.size().height() / 4))
@@ -347,15 +353,16 @@ class WebQueryWidget(QWidget):
 
     def load_completed(self, *args):
         self.loading_lb.setVisible(False)
-        self._view.setVisible(True)
+        self.show_view(True)
+        self.show_capture(False)
+
+    def show_capture(self, show):
+        self.img_lb.setVisible(show)
+        self.view_button.setVisible(show)
 
     def show_view(self, show):
         self._view.setVisible(show)
         self.capture_button.setVisible(show)
-
-        self.img_lb.setVisible(not show)
-        self.view_button.setVisible(not show)
-
         if not show:
             QApplication.setOverrideCursor(QCursor(Qt.CrossCursor))
         else:
@@ -365,18 +372,23 @@ class WebQueryWidget(QWidget):
         self.save_img_button.setVisible(show)
         self.combo_cur_fld_nm.setVisible(self.save_img_button.isVisible())
 
-    def capture(self, *args):
+    def on_capture(self, *args):
         self.img_lb.image = QImage(self.grab(self._view.rect()))
+        self.img_lb.setVisible(True)
         self.show_view(False)
+        self.show_capture(True)
 
-    def view(self, *args):
+    def on_view(self, *args):
         self.show_view(True)
+        self.show_capture(False)
         self.show_save_img_button(False)
+        self.img_lb.setVisible(False)
 
     def save_img(self, *args):
         self.img_saving.emit(self.img_lb.image)
         self.show_view(True)
         self.show_save_img_button(False)
+        self.show_capture(False)
 
     def cropped(self):
         self.show_save_img_button(True)
@@ -393,7 +405,6 @@ class WebQryAddon:
 
         self.web = WebQueryWidget(mw, )
         self.web.img_saving.connect(self.save_img)
-        self.web.combo_cur_fld_nm.currentIndexChanged.connect(self.img_field_changed)
         self.dock = None
 
         self.pre_loaded = False
@@ -461,6 +472,7 @@ class WebQryAddon:
                 Config.doc_size = (evt.size().width(),
                                    evt.size().height())
                 super(DockableWithClose, self).resizeEvent(evt)
+                evt.accept()
 
             def sizeHint(self):
                 return QSize(Config.doc_size[0], Config.doc_size[1])
@@ -493,11 +505,22 @@ class WebQryAddon:
             self.web.add_query_page(self.pages[0])
             self.web.combo_cur_fld_nm.clear()
             if self.reviewer:
-                nid = self.note.id
-                image_field = UserConfig.image_field_map.get(str(nid), 0)
+                image_field = Config.image_field_map.get(str(self.note.mid), 1)
                 self.web.combo_cur_fld_nm.addItems(self.note.keys())
                 self.web.combo_cur_fld_nm.setCurrentIndex(image_field)
+                self.web.capture_button.clicked.connect(self.capturing)
+                self.web.view_button.clicked.connect(self.capture_complete)
             self.pre_loaded = False
+
+    def capturing(self, *args):
+        self.web.combo_cur_fld_nm.currentIndexChanged.connect(self.img_field_changed)
+
+    def capture_complete(self, *args):
+        try:
+            self.web.combo_cur_fld_nm.currentIndexChanged.disconnect()
+        except TypeError:
+            pass
+        self.web.combo_cur_fld_nm.currentIndexChanged.connect(self.img_field_changed)
 
     def hide_web(self):
         self.load_pages('')
@@ -523,9 +546,11 @@ class WebQryAddon:
         mw.progress.timer(100, self.hide, False)
 
     def img_field_changed(self, index):
-        _mp = UserConfig.image_field_map
-        _mp[self.note.id] = index
-        UserConfig.image_field_map = _mp
+        if index == -1:
+            return
+        _mp = Config.image_field_map
+        _mp[str(self.note.mid)] = index
+        Config.image_field_map = _mp
 
     def save_img(self, img):
         """
