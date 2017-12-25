@@ -375,6 +375,7 @@ class WebQueryWidget(QWidget):
     def on_capture(self, *args):
         self.img_lb.image = QImage(self.grab(self._view.rect()))
         self.img_lb.setVisible(True)
+        self.img_lb.adjustSize()
         self.show_view(False)
         self.show_capture(True)
 
